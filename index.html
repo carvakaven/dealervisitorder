@@ -1,260 +1,449 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>CarvakaVen – Visit Check-in</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Carvaka Ventures – Dealer Visit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: #f5f4f0;
+    font-family: 'DM Sans', 'Noto Sans Devanagari', sans-serif;
+    background: linear-gradient(160deg, #fff4ee 0%, #f0f4ff 100%);
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    padding: 20px;
   }
 
   .card {
     background: #ffffff;
-    border-radius: 20px;
-    padding: 40px 32px 36px;
-    max-width: 360px;
+    border-radius: 24px;
+    padding: 32px 28px 28px;
+    max-width: 380px;
     width: 100%;
-    box-shadow: 0 2px 24px rgba(0,0,0,0.08);
-    text-align: center;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
   }
 
-  .logo {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+  /* Logo area */
+  .logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .logo-text {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .logo-carvaka {
+    font-size: 36px;
+    font-weight: 700;
     color: #e05a1e;
-    text-transform: uppercase;
-    margin-bottom: 28px;
+    letter-spacing: -0.5px;
+    font-family: 'DM Sans', sans-serif;
   }
 
+  .logo-group {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 0.08em;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .logo-divider {
+    width: 40px;
+    height: 2px;
+    background: #e8e8e8;
+    margin: 6px 0;
+  }
+
+  .samsung-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1428a0;
+    letter-spacing: 0.15em;
+    font-family: 'DM Sans', sans-serif;
+    background: #eef0ff;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .fullname {
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+    margin-top: 6px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.03em;
+  }
+
+  /* Icon */
   .icon-wrap {
-    width: 72px;
-    height: 72px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    margin: 0 auto 24px;
+    margin: 4px auto 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fef3ee;
-    transition: background 0.4s;
+    background: #fff4ee;
+    border: 2px solid #fddcc8;
+    transition: background 0.4s, border-color 0.4s;
   }
+  .icon-wrap.success { background: #edfaf3; border-color: #a8e6c8; }
+  .icon-wrap.error   { background: #fff0ee; border-color: #fdc8c0; }
 
-  .icon-wrap svg { transition: opacity 0.3s; }
-
-  .title {
+  /* Title */
+  .title-en {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
     color: #1a1a1a;
-    margin-bottom: 10px;
+    text-align: center;
+    margin-bottom: 4px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .title-hi {
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    text-align: center;
+    margin-bottom: 14px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
   }
 
-  .subtitle {
-    font-size: 14px;
-    color: #888;
+  /* Mandatory notice */
+  .mandatory-box {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .mandatory-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .mandatory-text-en {
+    font-size: 12px;
+    font-weight: 600;
+    color: #7a5800;
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.5;
+  }
+  .mandatory-text-hi {
+    font-size: 11px;
+    font-weight: 500;
+    color: #9a6f00;
+    font-family: 'Noto Sans Devanagari', sans-serif;
     line-height: 1.6;
-    margin-bottom: 28px;
+    margin-top: 2px;
   }
 
+  /* Status bar */
   .status-bar {
     background: #f5f4f0;
-    border-radius: 10px;
-    padding: 14px 16px;
+    border-radius: 12px;
+    padding: 13px 16px;
     font-size: 13px;
     color: #555;
-    margin-bottom: 24px;
-    min-height: 48px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     transition: background 0.3s, color 0.3s;
+    min-height: 50px;
+    flex-direction: column;
+    gap: 4px;
   }
+  .status-bar.success { background: #edfaf3; }
+  .status-bar.error   { background: #fff0ee; }
+  .status-bar.loading { background: #f0f0ff; }
 
-  .status-bar.success { background: #edfaf3; color: #1a8f52; }
-  .status-bar.error   { background: #fff0ee; color: #cc3a1e; }
-  .status-bar.loading { background: #f0f0ff; color: #5546d1; }
+  .status-row { display: flex; align-items: center; gap: 8px; }
+
+  .status-en {
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .status-hi {
+    font-size: 11px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    opacity: 0.8;
+  }
+  .status-bar.success .status-en { color: #1a8f52; }
+  .status-bar.success .status-hi { color: #1a8f52; }
+  .status-bar.error .status-en   { color: #cc3a1e; }
+  .status-bar.error .status-hi   { color: #cc3a1e; }
+  .status-bar.loading .status-en { color: #5546d1; }
+  .status-bar.loading .status-hi { color: #5546d1; }
 
   .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #ccc;
-    flex-shrink: 0;
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
     transition: background 0.3s;
   }
   .dot.success { background: #1a8f52; }
   .dot.error   { background: #cc3a1e; }
-  .dot.loading {
-    background: #5546d1;
-    animation: pulse 1s infinite;
-  }
+  .dot.loading { background: #5546d1; animation: pulse 1s infinite; }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
-  }
-
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    background: #e05a1e;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    text-decoration: none;
-  }
-
-  .btn:hover  { background: #c94e18; }
-  .btn:active { transform: scale(0.98); }
-  .btn:disabled { background: #ddd; color: #aaa; cursor: not-allowed; }
-
-  .note {
-    font-size: 12px;
-    color: #bbb;
-    margin-top: 18px;
-    line-height: 1.5;
-  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
   .spinner {
     width: 16px; height: 16px;
-    border: 2px solid #ccc;
+    border: 2px solid #ddd;
     border-top-color: #5546d1;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     flex-shrink: 0;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Button */
+  .btn {
+    display: block; width: 100%;
+    padding: 16px;
+    background: #e05a1e;
+    color: #fff;
+    border: none; border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .btn:hover  { background: #c94e18; }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { background: #ddd; color: #aaa; cursor: not-allowed; }
+  .btn-hi {
+    display: block;
+    font-size: 12px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-weight: 500;
+    opacity: 0.85;
+    margin-top: 3px;
+  }
+
+  /* Steps for iOS */
+  .steps-box {
+    background: #f8f8f8;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    display: none;
+  }
+  .steps-box.visible { display: block; }
+  .steps-title-en {
+    font-size: 12px; font-weight: 700; color: #333;
+    font-family: 'DM Sans', sans-serif; margin-bottom: 2px;
+  }
+  .steps-title-hi {
+    font-size: 11px; font-weight: 600; color: #555;
+    font-family: 'Noto Sans Devanagari', sans-serif; margin-bottom: 10px;
+  }
+  .step {
+    display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start;
+  }
+  .step-num {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #e05a1e; color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .step-text-en { font-size: 12px; color: #333; font-family: 'DM Sans', sans-serif; line-height: 1.4; }
+  .step-text-hi { font-size: 11px; color: #666; font-family: 'Noto Sans Devanagari', sans-serif; line-height: 1.5; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 10px;
+    color: #bbb;
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.6;
+  }
 </style>
 </head>
 <body>
-
 <div class="card">
-  <div class="logo">Carvaka Ventures</div>
 
+  <!-- Logo -->
+  <div class="logo-area">
+    <div class="logo-text">
+      <span class="logo-carvaka">CARVAKA</span>
+      <span class="logo-group">GROUP</span>
+    </div>
+    <div class="logo-divider"></div>
+    <div class="samsung-badge">SAMSUNG AUTHORIZED DISTRIBUTOR</div>
+    <div class="fullname">Carvaka Ventures Private Limited</div>
+  </div>
+
+  <!-- Icon -->
   <div class="icon-wrap" id="iconWrap">
-    <!-- Location pin icon -->
-    <svg id="iconPin" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16 3C11.03 3 7 7.03 7 12C7 19 16 29 16 29C16 29 25 19 25 12C25 7.03 20.97 3 16 3Z" fill="#e05a1e" opacity="0.15"/>
-      <path d="M16 3C11.03 3 7 7.03 7 12C7 19 16 29 16 29C16 29 25 19 25 12C25 7.03 20.97 3 16 3Z" stroke="#e05a1e" stroke-width="1.8" fill="none"/>
-      <circle cx="16" cy="12" r="3.5" fill="#e05a1e"/>
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <path d="M18 3C12.48 3 8 7.48 8 13C8 21 18 33 18 33C18 33 28 21 28 13C28 7.48 23.52 3 18 3Z" fill="#e05a1e" opacity="0.15"/>
+      <path d="M18 3C12.48 3 8 7.48 8 13C8 21 18 33 18 33C18 33 28 21 28 13C28 7.48 23.52 3 18 3Z" stroke="#e05a1e" stroke-width="1.8" fill="none"/>
+      <circle cx="18" cy="13" r="4" fill="#e05a1e"/>
     </svg>
   </div>
 
-  <div class="title" id="title">Detecting your location</div>
-  <div class="subtitle" id="subtitle">Please wait while we find your current location. This takes just a moment.</div>
+  <!-- Title -->
+  <div class="title-en" id="titleEn">Dealer Visit Check-in</div>
+  <div class="title-hi" id="titleHi">डीलर विज़िट चेक-इन</div>
 
-  <div class="status-bar loading" id="statusBar">
-    <span class="spinner" id="spinner"></span>
-    <span id="statusText">Requesting GPS…</span>
+  <!-- Mandatory notice -->
+  <div class="mandatory-box">
+    <div class="mandatory-icon">⚠️</div>
+    <div>
+      <div class="mandatory-text-en">Location access is MANDATORY. Without it, your visit will not be recorded and may affect your appraisal.</div>
+      <div class="mandatory-text-hi">लोकेशन की अनुमति देना अनिवार्य है। बिना लोकेशन के विज़िट दर्ज नहीं होगी और आपके मूल्यांकन पर असर पड़ सकता है।</div>
+    </div>
   </div>
 
-  <button class="btn" id="mainBtn" disabled>Opening Visit Form…</button>
-  <p class="note" id="note">Your location is only used to verify you are at the dealer's location. It is saved securely with your form entry.</p>
+  <!-- Status -->
+  <div class="status-bar loading" id="statusBar">
+    <div class="status-row">
+      <span class="spinner" id="spinner"></span>
+      <span class="status-en" id="statusEn">Detecting your location…</span>
+    </div>
+    <span class="status-hi" id="statusHi">आपकी लोकेशन पता की जा रही है…</span>
+  </div>
+
+  <!-- Button -->
+  <button class="btn" id="mainBtn" disabled>
+    Please wait…
+    <span class="btn-hi">कृपया प्रतीक्षा करें…</span>
+  </button>
+
+  <!-- Steps shown on error -->
+  <div class="steps-box" id="stepsBox">
+    <div class="steps-title-en">How to enable location on your phone:</div>
+    <div class="steps-title-hi">अपने फोन में लोकेशन चालू करने के तरीके:</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-text-en">iPhone: Settings → Safari → Location → Allow</div>
+        <div class="step-text-hi">iPhone: सेटिंग्स → Safari → लोकेशन → Allow करें</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-text-en">Android: Settings → Apps → Chrome → Permissions → Location → Allow</div>
+        <div class="step-text-hi">Android: सेटिंग्स → Apps → Chrome → Permissions → Location → Allow करें</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-text-en">After enabling, close and reopen this link.</div>
+        <div class="step-text-hi">चालू करने के बाद यह लिंक बंद करके दोबारा खोलें।</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Carvaka Ventures Private Limited · Samsung Authorized Distributor<br>
+    Your location data is used only to verify dealer visits and is stored securely.<br>
+    लोकेशन डेटा केवल विज़िट सत्यापन के लिए उपयोग किया जाता है।
+  </div>
+
 </div>
 
 <script>
-  // ─────────────────────────────────────────────────────────────
-  // CONFIGURATION — update these two values
-  // ─────────────────────────────────────────────────────────────
   const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLScfH6zEB1fJwrGcfQIjfp9e2QUiMcl-nSlITJQ8zRTyWVY3Ng/viewform";
-  
-  // ⚠️  REPLACE THIS with the entry ID from your pre-filled link
-  // It will look like:  entry.123456789
-  // Steps: Form → ⋮ → "Get pre-filled link" → fill GPS field → Get Link → copy the entry.XXXXXXX part
-  const GPS_ENTRY_ID = "entry.194107257";
-  // ─────────────────────────────────────────────────────────────
+  const GPS_ENTRY_ID  = "entry.194107257";
 
   const statusBar = document.getElementById("statusBar");
-  const statusText = document.getElementById("statusText");
-  const spinner    = document.getElementById("spinner");
-  const dot        = document.createElement("span");
-  const mainBtn    = document.getElementById("mainBtn");
-  const title      = document.getElementById("title");
-  const subtitle   = document.getElementById("subtitle");
-  const note       = document.getElementById("note");
+  const statusEn  = document.getElementById("statusEn");
+  const statusHi  = document.getElementById("statusHi");
+  const spinner   = document.getElementById("spinner");
+  const mainBtn   = document.getElementById("mainBtn");
+  const iconWrap  = document.getElementById("iconWrap");
+  const titleEn   = document.getElementById("titleEn");
+  const titleHi   = document.getElementById("titleHi");
+  const stepsBox  = document.getElementById("stepsBox");
 
-  function setStatus(type, text) {
+  function setStatus(type, en, hi) {
     statusBar.className = "status-bar " + type;
-    statusText.textContent = text;
-    if (type === "loading") {
-      if (!statusBar.contains(spinner)) statusBar.insertBefore(spinner, statusText);
-      spinner.style.display = "block";
-    } else {
-      spinner.style.display = "none";
-      const d = document.createElement("span");
-      d.className = "dot " + type;
-      if (statusBar.firstChild && statusBar.firstChild.classList && statusBar.firstChild.classList.contains("dot")) {
-        statusBar.removeChild(statusBar.firstChild);
-      }
-      statusBar.insertBefore(d, statusText);
-    }
+    statusEn.textContent = en;
+    statusHi.textContent = hi;
+    spinner.style.display = type === "loading" ? "block" : "none";
   }
 
-  function buildFormURL(lat, lng, accuracy) {
-    const locationStr = lat.toFixed(6) + "," + lng.toFixed(6) + " (±" + Math.round(accuracy) + "m)";
-    const mapsLink = "https://maps.google.com/?q=" + lat.toFixed(6) + "," + lng.toFixed(6);
-    const combined = locationStr + " | " + mapsLink;
-    return FORM_BASE_URL + "?usp=pp_url&" + GPS_ENTRY_ID + "=" + encodeURIComponent(combined);
+  function buildURL(lat, lng, accuracy) {
+    const loc = lat.toFixed(6) + "," + lng.toFixed(6) + " (±" + Math.round(accuracy) + "m)";
+    const map = "https://maps.google.com/?q=" + lat.toFixed(6) + "," + lng.toFixed(6);
+    return FORM_BASE_URL + "?usp=pp_url&" + GPS_ENTRY_ID + "=" + encodeURIComponent(loc + " | " + map);
   }
 
   function onSuccess(pos) {
-    const { latitude, longitude, accuracy } = pos.coords;
-    const formURL = buildFormURL(latitude, longitude, accuracy);
+    const { latitude: lat, longitude: lng, accuracy } = pos.coords;
+    const url = buildURL(lat, lng, accuracy);
 
-    title.textContent = "Location found!";
-    subtitle.textContent = "Accuracy: ±" + Math.round(accuracy) + " metres. Tap below to open your visit form.";
-    setStatus("success", "GPS captured successfully");
+    iconWrap.className = "icon-wrap success";
+    titleEn.textContent = "Location Captured!";
+    titleHi.textContent = "लोकेशन मिल गई!";
+    setStatus("success",
+      "GPS found · Accuracy: ±" + Math.round(accuracy) + "m",
+      "लोकेशन सफलतापूर्वक प्राप्त हुई · सटीकता: ±" + Math.round(accuracy) + " मीटर"
+    );
 
-    mainBtn.textContent = "Open Visit Form →";
+    mainBtn.innerHTML = 'Open Visit Form →<span class="btn-hi">विज़िट फॉर्म खोलें →</span>';
     mainBtn.disabled = false;
-    mainBtn.onclick = () => { window.location.href = formURL; };
+    mainBtn.onclick = () => { window.location.href = url; };
 
-    // Auto-redirect after 2 seconds for smoothest experience
-    setTimeout(() => { window.location.href = formURL; }, 2000);
+    // Auto redirect after 2 seconds
+    setTimeout(() => { window.location.href = url; }, 2000);
   }
 
   function onError(err) {
-    let msg = "Could not get location.";
-    if (err.code === 1) msg = "Location permission denied.";
-    if (err.code === 2) msg = "GPS signal unavailable.";
-    if (err.code === 3) msg = "Location request timed out.";
+    let en = "Location permission denied.";
+    let hi = "लोकेशन की अनुमति नहीं मिली।";
+    if (err.code === 2) { en = "GPS signal unavailable."; hi = "GPS सिग्नल उपलब्ध नहीं है।"; }
+    if (err.code === 3) { en = "Location request timed out."; hi = "लोकेशन अनुरोध का समय समाप्त हो गया।"; }
 
-    title.textContent = "Location unavailable";
-    subtitle.textContent = "You can still submit the form, but your location will be marked as unavailable.";
-    setStatus("error", msg);
+    iconWrap.className = "icon-wrap error";
+    titleEn.textContent = "Location Access Required";
+    titleHi.textContent = "लोकेशन की अनुमति आवश्यक है";
+    setStatus("error", en, hi);
+    stepsBox.className = "steps-box visible";
 
-    const fallbackURL = FORM_BASE_URL + "?usp=pp_url&" + GPS_ENTRY_ID + "=" + encodeURIComponent("LOCATION NOT CAPTURED – " + msg);
-    mainBtn.textContent = "Open Visit Form Anyway →";
+    const fallback = FORM_BASE_URL + "?usp=pp_url&" + GPS_ENTRY_ID + "=" +
+      encodeURIComponent("⚠️ LOCATION NOT CAPTURED – " + en);
+    mainBtn.innerHTML = 'Open Form Anyway (Not Recommended)<span class="btn-hi">फिर भी फॉर्म खोलें (अनुशंसित नहीं)</span>';
     mainBtn.disabled = false;
-    mainBtn.onclick = () => { window.location.href = fallbackURL; };
-    note.textContent = "Tip: Make sure location is enabled on your phone for Chrome or your browser app.";
+    mainBtn.style.background = "#999";
+    mainBtn.onclick = () => { window.location.href = fallback; };
   }
 
-  // Start GPS detection immediately on page load
+  // Break out of iframe if embedded
+  if (window.self !== window.top) {
+    try { window.top.location.href = window.self.location.href; } catch(e) {}
+  }
+
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(onSuccess, onError, {
       enableHighAccuracy: true,
-      timeout: 12000,
+      timeout: 15000,
       maximumAge: 0
     });
   } else {
-    onError({ code: 2, message: "Geolocation not supported" });
+    onError({ code: 2, message: "Not supported" });
   }
 </script>
 </body>
