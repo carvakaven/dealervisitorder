@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CarvakaVen – Visit Check-in</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f5f4f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px 32px 36px;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+
+  .logo {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #e05a1e;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .icon-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fef3ee;
+    transition: background 0.4s;
+  }
+
+  .icon-wrap svg { transition: opacity 0.3s; }
+
+  .title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .status-bar {
+    background: #f5f4f0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 24px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .status-bar.success { background: #edfaf3; color: #1a8f52; }
+  .status-bar.error   { background: #fff0ee; color: #cc3a1e; }
+  .status-bar.loading { background: #f0f0ff; color: #5546d1; }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #ccc;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .dot.success { background: #1a8f52; }
+  .dot.error   { background: #cc3a1e; }
+  .dot.loading {
+    background: #5546d1;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: #e05a1e;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none;
+  }
+
+  .btn:hover  { background: #c94e18; }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { background: #ddd; color: #aaa; cursor: not-allowed; }
+
+  .note {
+    font-size: 12px;
+    color: #bbb;
+    margin-top: 18px;
+    line-height: 1.5;
+  }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid #ccc;
+    border-top-color: #5546d1;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">Carvaka Ventures</div>
+
+  <div class="icon-wrap" id="iconWrap">
+    <!-- Location pin icon -->
+    <svg id="iconPin" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 3C11.03 3 7 7.03 7 12C7 19 16 29 16 29C16 29 25 19 25 12C25 7.03 20.97 3 16 3Z" fill="#e05a1e" opacity="0.15"/>
+      <path d="M16 3C11.03 3 7 7.03 7 12C7 19 16 29 16 29C16 29 25 19 25 12C25 7.03 20.97 3 16 3Z" stroke="#e05a1e" stroke-width="1.8" fill="none"/>
+      <circle cx="16" cy="12" r="3.5" fill="#e05a1e"/>
+    </svg>
+  </div>
+
+  <div class="title" id="title">Detecting your location</div>
+  <div class="subtitle" id="subtitle">Please wait while we find your current location. This takes just a moment.</div>
+
+  <div class="status-bar loading" id="statusBar">
+    <span class="spinner" id="spinner"></span>
+    <span id="statusText">Requesting GPS…</span>
+  </div>
+
+  <button class="btn" id="mainBtn" disabled>Opening Visit Form…</button>
+  <p class="note" id="note">Your location is only used to verify you are at the dealer's location. It is saved securely with your form entry.</p>
+</div>
+
+<script>
+  // ─────────────────────────────────────────────────────────────
+  // CONFIGURATION — update these two values
+  // ─────────────────────────────────────────────────────────────
+  const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLScfH6zEB1fJwrGcfQIjfp9e2QUiMcl-nSlITJQ8zRTyWVY3Ng/viewform";
+  
+  // ⚠️  REPLACE THIS with the entry ID from your pre-filled link
+  // It will look like:  entry.123456789
+  // Steps: Form → ⋮ → "Get pre-filled link" → fill GPS field → Get Link → copy the entry.XXXXXXX part
+  const GPS_ENTRY_ID = "entry.194107257";
+  // ─────────────────────────────────────────────────────────────
+
+  const statusBar = document.getElementById("statusBar");
+  const statusText = document.getElementById("statusText");
+  const spinner    = document.getElementById("spinner");
+  const dot        = document.createElement("span");
+  const mainBtn    = document.getElementById("mainBtn");
+  const title      = document.getElementById("title");
+  const subtitle   = document.getElementById("subtitle");
+  const note       = document.getElementById("note");
+
+  function setStatus(type, text) {
+    statusBar.className = "status-bar " + type;
+    statusText.textContent = text;
+    if (type === "loading") {
+      if (!statusBar.contains(spinner)) statusBar.insertBefore(spinner, statusText);
+      spinner.style.display = "block";
+    } else {
+      spinner.style.display = "none";
+      const d = document.createElement("span");
+      d.className = "dot " + type;
+      if (statusBar.firstChild && statusBar.firstChild.classList && statusBar.firstChild.classList.contains("dot")) {
+        statusBar.removeChild(statusBar.firstChild);
+      }
+      statusBar.insertBefore(d, statusText);
+    }
+  }
+
+  function buildFormURL(lat, lng, accuracy) {
+    const locationStr = lat.toFixed(6) + "," + lng.toFixed(6) + " (±" + Math.round(accuracy) + "m)";
+    const mapsLink = "https://maps.google.com/?q=" + lat.toFixed(6) + "," + lng.toFixed(6);
+    const combined = locationStr + " | " + mapsLink;
+    return FORM_BASE_URL + "?usp=pp_url&" + GPS_ENTRY_ID + "=" + encodeURIComponent(combined);
+  }
+
+  function onSuccess(pos) {
+    const { latitude, longitude, accuracy } = pos.coords;
+    const formURL = buildFormURL(latitude, longitude, accuracy);
+
+    title.textContent = "Location found!";
+    subtitle.textContent = "Accuracy: ±" + Math.round(accuracy) + " metres. Tap below to open your visit form.";
+    setStatus("success", "GPS captured successfully");
+
+    mainBtn.textContent = "Open Visit Form →";
+    mainBtn.disabled = false;
+    mainBtn.onclick = () => { window.location.href = formURL; };
+
+    // Auto-redirect after 2 seconds for smoothest experience
+    setTimeout(() => { window.location.href = formURL; }, 2000);
+  }
+
+  function onError(err) {
+    let msg = "Could not get location.";
+    if (err.code === 1) msg = "Location permission denied.";
+    if (err.code === 2) msg = "GPS signal unavailable.";
+    if (err.code === 3) msg = "Location request timed out.";
+
+    title.textContent = "Location unavailable";
+    subtitle.textContent = "You can still submit the form, but your location will be marked as unavailable.";
+    setStatus("error", msg);
+
+    const fallbackURL = FORM_BASE_URL + "?usp=pp_url&" + GPS_ENTRY_ID + "=" + encodeURIComponent("LOCATION NOT CAPTURED – " + msg);
+    mainBtn.textContent = "Open Visit Form Anyway →";
+    mainBtn.disabled = false;
+    mainBtn.onclick = () => { window.location.href = fallbackURL; };
+    note.textContent = "Tip: Make sure location is enabled on your phone for Chrome or your browser app.";
+  }
+
+  // Start GPS detection immediately on page load
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+      enableHighAccuracy: true,
+      timeout: 12000,
+      maximumAge: 0
+    });
+  } else {
+    onError({ code: 2, message: "Geolocation not supported" });
+  }
+</script>
+</body>
+</html>
